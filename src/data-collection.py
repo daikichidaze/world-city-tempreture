@@ -43,7 +43,7 @@ output_folder = '../data'
 
 if __name__ == "__main__":
     target_date = datetime(2021, 1, 1)
-    duration_days = 5
+    duration_days = 365
 
     for _ in range(duration_days):
         dc = DataCollecter(base_url, output_folder, target_date)
