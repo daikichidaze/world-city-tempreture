@@ -6,7 +6,7 @@ import numpy as np
 from datetime import datetime, timedelta
 from glob import glob
 
-from data-collection import start_date, end_date
+from data_collection import start_date, end_date, duration_days
 
 
 class MissingValueCorrection:
@@ -44,10 +44,10 @@ class MissingValueCorrection:
 
 
 class SeparateByCity:
-    year_set = set(datetime(2021, 1, 1) + timedelta(days=i)
-                   for i in range(365))
-    min_days = 360
-    target_days = 365
+    year_set = set(start_date + timedelta(days=i)
+                   for i in range(duration_days))
+    min_days = duration_days - 5
+    target_days = duration_days
 
     @staticmethod
     def data_processing(df: pd.DataFrame, poi_id: int, output_csv_path: str):
@@ -73,8 +73,15 @@ class SeparateByCity:
             if d in set(df_poi['date']):
                 continue
 
-            front_last = df_poi[df_poi['date'] < d].iloc[-1]
-            back_first = df_poi[d < df_poi['date']].iloc[0]
+            if d != start_date:
+                front_last = df_poi[df_poi['date'] < d].iloc[-1]
+            else:
+                front_last = df_poi.iloc[0]
+
+            if d != end_date:
+                back_first = df_poi[d < df_poi['date']].iloc[0]
+            else:
+                back_first = df_poi.iloc[-1]
 
             missing_days = (back_first['date'] - front_last['date']).days - 1
 
@@ -103,10 +110,10 @@ by_city_output_folder = 'data/bycity'
 
 
 if __name__ == '__main__':
-    # for p in glob(os.path.join(input_foler, '*csv')):
-    #     output_path = os.path.join(
-    #         missing_value_output_folder, p.split('/')[-1])
-    #     MissingValueCorrection.data_processing(p, output_path)
+    for p in glob(os.path.join(input_foler, '*csv')):
+        output_path = os.path.join(
+            missing_value_output_folder, p.split('/')[-1])
+        MissingValueCorrection.data_processing(p, output_path)
 
     df_all_period = pd.concat([pd.read_csv(p, parse_dates=['date'])
                                for p in glob(os.path.join(missing_value_output_folder, '*csv'))],

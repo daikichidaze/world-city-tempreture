@@ -44,7 +44,7 @@ output_folder = '../data'
 
 start_date = datetime(2021, 1, 1)
 duration_days = 365
-end_date = start_date + timedelta(days=duration_days)
+end_date = start_date + timedelta(days=duration_days - 1)
 
 
 if __name__ == "__main__":
