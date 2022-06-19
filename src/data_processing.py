@@ -73,12 +73,12 @@ class SeparateByCity:
             if d in set(df_poi['date']):
                 continue
 
-            if d != start_date:
+            if d >= df_poi['date'].min():
                 front_last = df_poi[df_poi['date'] < d].iloc[-1]
             else:
                 front_last = df_poi.iloc[0]
 
-            if d != end_date:
+            if d <= df_poi['date'].max():
                 back_first = df_poi[d < df_poi['date']].iloc[0]
             else:
                 back_first = df_poi.iloc[-1]
