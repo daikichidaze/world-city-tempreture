@@ -6,6 +6,8 @@ import numpy as np
 from datetime import datetime, timedelta
 from glob import glob
 
+from data-collection import start_date, end_date
+
 
 class MissingValueCorrection:
     @staticmethod
@@ -18,16 +20,26 @@ class MissingValueCorrection:
         df['date'] = datetime.strptime(input_csv_path[-14:-4], '%Y-%m-%d')
 
         df = MissingValueCorrection.inplace_nulls(df)
+        df = MissingValueCorrection.convert_column(
+            df, ['lat', 'long', 'mean', 'max', 'min', 'precipitation'], float)
         df.dropna(inplace=True)
         df.to_csv(output_csv_path, index=False)
         print(f'output the file: {output_csv_path}')
         return
 
     def inplace_nulls(df: pd.DataFrame) -> pd.DataFrame:
-        df.replace('', np.nan, inplace=True)
-        df.replace(' ', np.nan, inplace=True)
         for c, v in df.iteritems():
-            df[c] = v.str.strip()
+            if v.dtypes == object:
+                df[c] = v.str.strip()
+
+        for s in ['', ' ', '--']:
+            df.replace(s, np.nan, inplace=True)
+
+        return df
+
+    def convert_column(df: pd.DataFrame, column_list: list, target_type: type) -> pd.DataFrame:
+        for c in column_list:
+            df[c] = df[c].astype(target_type)
         return df
 
 
@@ -78,7 +90,7 @@ class SeparateByCity:
             df_add['date'] = [front_last['date'] +
                               timedelta(days=i+1) for i in range(missing_days)]
 
-            df_poi = df_poi.append(df_add)
+            df_poi = pd.concat([df_poi, df_add], axis=0)
             df_poi.sort_values(by='date', ignore_index=True, inplace=True)
 
         return df_poi
@@ -91,10 +103,10 @@ by_city_output_folder = 'data/bycity'
 
 
 if __name__ == '__main__':
-    for p in glob(os.path.join(input_foler, '*csv')):
-        output_path = os.path.join(
-            missing_value_output_folder, p.split('/')[-1])
-        MissingValueCorrection.data_processing(p, output_path)
+    # for p in glob(os.path.join(input_foler, '*csv')):
+    #     output_path = os.path.join(
+    #         missing_value_output_folder, p.split('/')[-1])
+    #     MissingValueCorrection.data_processing(p, output_path)
 
     df_all_period = pd.concat([pd.read_csv(p, parse_dates=['date'])
                                for p in glob(os.path.join(missing_value_output_folder, '*csv'))],
