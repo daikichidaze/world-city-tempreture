@@ -83,7 +83,8 @@ class SeparateByCity:
             else:
                 back_first = df_poi.iloc[-1]
 
-            missing_days = (back_first['date'] - front_last['date']).days - 1
+            missing_days = max(
+                (back_first['date'] - front_last['date']).days - 1, 1)
 
             df_add = pd.DataFrame()
             df_add[['poi_id', 'poi_name', 'country_name', 'lat', 'long']] = \
