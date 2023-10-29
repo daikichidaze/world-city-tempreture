@@ -1,4 +1,5 @@
 import csv
+from tracemalloc import start
 import requests
 import time
 from datetime import datetime, timedelta
@@ -41,9 +42,13 @@ class DataCollecter:
 base_url = r'https://www.data.jma.go.jp/cpd/monitor/dailyview/all_download_d.php'
 output_folder = '../data'
 
+start_date = datetime(2021, 1, 1)
+duration_days = 365
+end_date = start_date + timedelta(days=duration_days - 1)
+
+
 if __name__ == "__main__":
-    target_date = datetime(2021, 1, 1)
-    duration_days = 365
+    target_date = start_date
 
     for _ in range(duration_days):
         dc = DataCollecter(base_url, output_folder, target_date)
