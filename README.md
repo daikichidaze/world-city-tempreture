@@ -1,89 +1,47 @@
-# World City Temperature
+# World City Temperature - Python Scripts
 
-This repository contains Jupyter notebooks related to the analysis of city temperature data.
+This repository contains Python scripts related to the collection and processing of city temperature data.
 
-## Notebooks Overview
+## Scripts Overview
 
-### 1. Data Collection
+### 1. data_collection.py
 
-- **Summary**:
-  - Data collection from external sources and saving it to CSV files.
-  - Performing API requests to fetch data for specific dates.
-  - Saving the fetched data into CSV files.
+- **Purpose**: A script to fetch temperature data from external sources and save it as CSV files.
+- **Key Features**:
+  - `DataCollector` class: Contains methods to fetch data for a specified date and save it to a CSV file.
+  - `base_url` and `output_folder` variables: Specify the URL for data fetching and the folder for saving the fetched data.
+  - Main execution: Fetches data for a specified duration and saves each date's data as individual CSV files.
 
-### 2. Single Day Analysis (After null dropped)
+### 2. data_processing.py
 
-- **Summary**:
-  - Combining data from multiple CSV files.
-  - Displaying memory usage of current variables.
-  - Ensuring no duplications in `poi_id`.
-  - Checking for missing dates in the yearly dataset.
-
-### 3. City Data Correction
-
-- **Summary**:
-  - Correcting city data.
-  - Including codes to fill missing data.
-
-### 4. GDP Correlation
-
-- **Summary**:
-  - Analyzing correlation between GDP and temperature.
-  - Fetching POI information from each CSV file.
-  - Calculating average temperature for each city and country.
-  - Visualizing correlation between average temperature and GDP for each country.
-  - Displaying yearly trend of correlation between temperature and GDP.
-
-## Usage
-
-Each notebook operates independently. Open and execute the notebook of your interest. Information regarding required data and library imports can be found inside the notebooks.
-
-## Miscellaneous
-
-For questions or feedback regarding this repository, please create an issue or contact the repository owner directly.
+- **Purpose**: A script for preprocessing the fetched temperature data and filling in missing values.
+- **Key Features**:
+  - `MissingValueCorrection` class: Contains methods for filling in missing values and preprocessing the data.
+  - `SeparateByCity` class: Contains methods to separate data by city and save it.
+  - `input_folder`, `missing_value_output_folder`, `by_city_output_folder` variables: Specify the input data folder, the folder to save data after missing value correction, and the folder to save data separated by city.
+  - Main execution: Fills in missing values and separates data by city for saving.
 
 ---
 
-# World City Temperature
+# World City Temperature - Python スクリプト
 
-このリポジトリは、都市の気温データに関する解析を行うための Jupyter notebook を含んでいます。
+このリポジトリは、都市の気温データの収集および処理に関連する Python スクリプトを含んでいます。
 
-## ノートブックの内容
+## スクリプトの概要
 
-### 1. Data Collection
+### 1. data_collection.py
 
-- **概要**:
-  - 外部からのデータの取得と CSV への保存を行っています。
-  - 特定の日付のデータを取得するための API リクエストを行っています。
-  - 取得したデータを CSV ファイルに保存しています。
+- **目的**: 外部のデータソースから気温データを取得し、CSV ファイルとして保存するためのスクリプト。
+- **主な機能**:
+  - `DataCollector` クラス: 指定された日付のデータを取得し、CSV ファイルに保存するためのメソッドを持つクラス。
+  - `base_url` と `output_folder` 変数: データの取得先の URL とデータの保存先のフォルダを指定。
+  - メインの実行部分: 指定された期間のデータを取得し、それぞれの日付のデータを CSV ファイルとして保存。
 
-### 2. Single Day Analysis (After null dropped)
+### 2. data_processing.py
 
-- **概要**:
-  - 複数の CSV ファイルからデータを読み込んで結合しています。
-  - 現在の変数のメモリ使用量を表示しています。
-  - `poi_id`の重複がないことを確認しています。
-  - 1 年間のデータセット内で欠落している日付を確認しています。
-
-### 3. City Data Correction
-
-- **概要**:
-  - 都市データの補正を行っています。
-  - 欠損データを補完するためのコードが含まれています。
-
-### 4. GDP Correlation
-
-- **概要**:
-  - GDP と気温の相関を解析しています。
-  - 各 CSV ファイルから POI の情報を取得しています。
-  - 各都市および国の平均気温を計算しています。
-  - 各国の平均気温と GDP の相関を可視化しています。
-  - 年間の気温と GDP の相関のトレンドを表示しています。
-
-## 使用方法
-
-各ノートブックは独立しているため、興味のある解析を行いたいノートブックを開いて実行してください。必要なデータやライブラリのインポートに関する情報もノートブック内に記載されています。
-
-## その他
-
-このリポジトリに関する質問やフィードバックは、issue を作成するか、リポジトリの所有者に直接連絡してください。
+- **目的**: 取得した気温データの前処理と欠損値の補完を行うためのスクリプト。
+- **主な機能**:
+  - `MissingValueCorrection` クラス: 欠損値の補完とデータの前処理を行うためのメソッドを持つクラス。
+  - `SeparateByCity` クラス: データを都市ごとに分割して保存するためのメソッドを持つクラス。
+  - `input_folder`、`missing_value_output_folder`、`by_city_output_folder` 変数: 入力データのフォルダ、欠損値補完後のデータの保存先、都市ごとのデータの保存先を指定。
+  - メインの実行部分: 欠損値の補完を行い、都市ごとにデータを分割して保存。
