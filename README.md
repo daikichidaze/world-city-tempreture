@@ -27,6 +27,10 @@ This repository contains Python scripts related to the collection and processing
 
 https://www.data.jma.go.jp/cpd/monitor/dailyview/
 
+### GDP growth - IMF
+
+https://www.imf.org/external/datamapper/datasets/WEO
+
 ---
 
 # World City Temperature - Python スクリプト
