@@ -21,6 +21,12 @@ This repository contains Python scripts related to the collection and processing
   - `input_folder`, `missing_value_output_folder`, `by_city_output_folder` variables: Specify the input data folder, the folder to save data after missing value correction, and the folder to save data separated by city.
   - Main execution: Fills in missing values and separates data by city for saving.
 
+## Data source
+
+### Temprature
+
+https://www.data.jma.go.jp/cpd/monitor/dailyview/
+
 ---
 
 # World City Temperature - Python スクリプト
