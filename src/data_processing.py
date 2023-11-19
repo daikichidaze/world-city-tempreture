@@ -17,11 +17,14 @@ class MissingValueCorrection:
 
         # Add date column
         df['date'] = datetime.strptime(input_csv_path[-14:-4], '%Y-%m-%d')
+        df['filled_tempreture_data'] = False
 
         df = MissingValueCorrection.inplace_nulls(df)
         df = MissingValueCorrection.convert_column(
             df, ['lat', 'long', 'mean', 'max', 'min', 'precipitation'], float)
-        df.dropna(inplace=True)
+        df = MissingValueCorrection.fill_null_tempreture_data(
+            df, ['mean', 'max', 'min'])
+        # df.dropna(inplace=True) # not remove the missing rows
         df.to_csv(output_csv_path, index=False)
         print(f'output the file: {output_csv_path}')
         return
@@ -33,12 +36,22 @@ class MissingValueCorrection:
 
         for s in ['', ' ', '--']:
             df.replace(s, np.nan, inplace=True)
-
         return df
 
     def convert_column(df: pd.DataFrame, column_list: list, target_type: type) -> pd.DataFrame:
         for c in column_list:
             df[c] = df[c].astype(target_type)
+        return df
+
+    def fill_null_tempreture_data(df: pd.DataFrame, column_list: list) -> pd.DataFrame:
+        for idx, r in df.iterrows():
+            row_tempreture = r[column_list]
+            missing_temps = row_tempreture[row_tempreture.isna()]
+
+            if len(missing_temps) > 0:
+                missing_cols = missing_temps.index
+                df.loc[idx, missing_cols] = row_tempreture.dropna().mean()
+                df.loc[idx, 'filled_tempreture_data'] = False
         return df
 
 
@@ -61,7 +74,7 @@ class SeparateByCity:
         number_of_days = len(df_poi['date'].unique())
 
         if number_of_days > SeparateByCity.target_days:
-            raise(ValueError('raws of dataframe is not correct'))
+            raise (ValueError('raws of dataframe is not correct'))
 
         if number_of_days < SeparateByCity.min_days:
             return df_poi
@@ -104,7 +117,7 @@ class SeparateByCity:
 
 
 # folder path info
-input_foler = 'data/raw'
+input_foler = 'data/raw/2022'
 missing_value_output_folder = 'data/processed'
 by_city_output_folder = 'data/bycity'
 
