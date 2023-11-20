@@ -40,9 +40,9 @@ class DataCollecter:
 
 
 base_url = r'https://www.data.jma.go.jp/cpd/monitor/dailyview/all_download_d.php'
-output_folder = '../data'
+output_folder = '../data/raw/2022'
 
-start_date = datetime(2021, 1, 1)
+start_date = datetime(2022, 1, 1)
 duration_days = 365
 end_date = start_date + timedelta(days=duration_days - 1)
 
