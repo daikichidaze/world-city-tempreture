@@ -51,7 +51,7 @@ class MissingValueCorrection:
             if len(missing_temps) > 0:
                 missing_cols = missing_temps.index
                 df.loc[idx, missing_cols] = row_tempreture.dropna().mean()
-                df.loc[idx, 'filled_tempreture_data'] = False
+                df.loc[idx, 'filled_tempreture_data'] = True
         return df
 
 
@@ -118,7 +118,7 @@ class SeparateByCity:
 
 # folder path info
 input_foler = 'data/raw/2022'
-missing_value_output_folder = 'data/processed'
+missing_value_output_folder = 'data/processed/2022'
 by_city_output_folder = 'data/bycity'
 
 
